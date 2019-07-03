@@ -16,9 +16,5 @@ namespace DataAccess
         {
 
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlite("Data Source=booli.db");
-        //}ef migrations add InitialCreate
     }
 }

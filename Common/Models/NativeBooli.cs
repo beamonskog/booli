@@ -41,7 +41,6 @@ namespace Common.Models.NativeBooli
         public string Url { get; set; }
     }
 
-
     public class SearchParams
     {
         public int AreaId { get; set; }

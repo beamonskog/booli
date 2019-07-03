@@ -19,7 +19,6 @@ namespace DataAccess
         public async Task<List<SoldObject>> GetSoldObject(int booliId)
         {
             return await _context.SoldHousingObjects.Where(_ => _.BooliId == booliId).ToListAsync();
-            //throw new System.NotImplementedException();
         }
 
         public async Task<List<SoldObject>> GetSoldObjectsInArea(string areaName)
