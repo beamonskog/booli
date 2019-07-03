@@ -2,11 +2,12 @@
 {
     public class PriceEstimationInputModel
     {
-        public PriceEstimationInputModel(int size, string areaName, int rent)
+        public PriceEstimationInputModel(int size, string areaName, int rent, Position position)
         {
             Size = size;
             AreaName = areaName;
             Rent = rent;
+            Position = position;
         }
 
         public int Size { get; set; }

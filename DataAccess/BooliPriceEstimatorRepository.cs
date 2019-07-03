@@ -25,7 +25,8 @@ namespace DataAccess
         {
             return await _context.SoldHousingObjects
                 .Where(s => s.Location.NamedAreas
-                    .Any(n => n.Area == areaName)).ToListAsync();
+                    .Any(n => n.Area == areaName))
+                    .Include(a=>a.Location.Position).ToListAsync();
         }
 
         public async Task SyncSoldObjects(List<SoldObject> soldObjects)

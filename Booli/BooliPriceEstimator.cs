@@ -17,7 +17,7 @@ namespace BooliPriceEstimator
             _booliPriceEstimatorRepository = booliPriceEstimatorRepository;
         }
 
-        public async Task<int> GetPriceEstimation(PriceEstimationInputModel inputModel)
+        public async Task GetPriceEstimation(PriceEstimationInputModel inputModel)
         {
             const double AdditionalAreaFactor = 0.3; //Additional area is worth 30% as much as the main area
 
@@ -50,13 +50,16 @@ namespace BooliPriceEstimator
                 priceEstimate += (int)Math.Round(inputModel.AdditionalArea * AdditionalAreaFactor);
             }
 
-            return priceEstimate;
+
+            Console.WriteLine($"A apartment in {inputModel.AreaName} that is {inputModel.Size} square meters large and with a rent of {inputModel.Rent} SEK/ month is estimated to: ");
+            Console.WriteLine(string.Format("{0:#,0}", priceEstimate)+ " SEK");
+            Console.ReadLine();
         }
 
         private int GetSquareMeterPriceBasedOnLocation(List<PriceEstimationModel> estimationModels, PriceEstimationInputModel inputModel)
         {
             const int ThresholdNrOfObjects = 10;
-            const int SearchDistanceKm = 3;
+            const int SearchDistanceKm = 1;
 
             // Maybe do these two itteratively until we find a good number of candidates?
             //1. 
@@ -80,6 +83,7 @@ namespace BooliPriceEstimator
             var medianSquareMeterPrice = GetMedianSquareMeterPrice(recentlySoldNearObjectOfInterest);
 
             return (int)(medianSquareMeterPrice * rentFactor);
+            //return (int)(medianSquareMeterPrice ); //I found it more accurate if I removed rent factor
         }
 
         /// <summary>

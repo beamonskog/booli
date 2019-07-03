@@ -13,11 +13,12 @@ namespace Common.Models
                 Rent = (int?)soldObject.Rent;
                 SoldPrice = soldObject.SoldPrice;
                 SoldDate = GetSoldDate(soldObject.SoldDate);
-                Position = new Position(soldObject.Location.Position.Latitude, soldObject.Location.Position.Latitude);
+                Position = new Position(soldObject.Location.Position.Latitude, soldObject.Location.Position.Longitude);
             }
             catch (Exception e)
             {
-                throw e;
+                Console.WriteLine(e.Message);
+                //throw e;
             }
         }
 

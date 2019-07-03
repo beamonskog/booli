@@ -4,6 +4,7 @@ namespace Common.Models
 {
     public class SoldObject
     {
+        public int Id { get; set; }
         public Location Location { get; set; }
         public double LivingArea { get; set; }
         public int AdditionalArea { get; set; }
@@ -17,12 +18,14 @@ namespace Common.Models
 
     public class Location
     {
+        public int Id { get; set; }
         public Position Position { get; set; }
         public List<NamedArea> NamedAreas { get; set; }
     }
 
     public class NamedArea
     {
+        public int Id { get; set; }
         public string Area { get; set; }
     }
 
@@ -34,6 +37,7 @@ namespace Common.Models
             Longitude = longitude;
         }
 
+        public int Id { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
     }

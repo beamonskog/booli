@@ -29,11 +29,11 @@ namespace BooliPriceEstimator
             var booliPriceEstimator = serviceProvider.GetService<IBooliPriceEstimator>();
 
             //booliApiHandler.SyncSoldObjectsItteratively().Wait();
-            booliPriceEstimator.GetPriceEstimation(new PriceEstimationInputModel(74, "Årsta", 5000)).Wait();
+            var estimationInputModel = new PriceEstimationInputModel(74, "Årsta", 5000, StreetNameExamples.Siljansvagen72);
+            booliPriceEstimator.GetPriceEstimation(estimationInputModel).Wait();
 
-            Console.WriteLine("done!");
-            Console.ReadLine();
-        }        
+            
+        }
 
         const int radiusKm = 10;
 

@@ -5,6 +5,6 @@ namespace BooliPriceEstimator
 {
     public interface IBooliPriceEstimator
     {
-        Task<int> GetPriceEstimation(PriceEstimationInputModel inputModel);
+        Task GetPriceEstimation(PriceEstimationInputModel inputModel);
     }
 }
