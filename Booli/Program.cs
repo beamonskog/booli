@@ -29,7 +29,7 @@ namespace BooliPriceEstimator
             var booliPriceEstimator = serviceProvider.GetService<IBooliPriceEstimator>();
 
             //booliApiHandler.SyncSoldObjectsItteratively().Wait();
-            booliPriceEstimator.GetPriceEstimation(new PriceEstimationInputModel(50, "Årsta", 5000)).Wait();
+            booliPriceEstimator.GetPriceEstimation(new PriceEstimationInputModel(74, "Årsta", 5000)).Wait();
 
 
             //var booliPriceEstimator = new BooliPriceEstimator

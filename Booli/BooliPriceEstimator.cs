@@ -29,9 +29,9 @@ namespace BooliPriceEstimator
 
             var estimationModels = previouslySoldObjectsInArea.Select(_ => new PriceEstimationModel(_)).ToList();
 
-            var adjustedSquareMeterPrice = GetSquareMeterPriceBasedOnRent(estimationModels, inputModel);
+            //var adjustedSquareMeterPrice = GetSquareMeterPriceBasedOnRent(estimationModels, inputModel);
 
-            var adjustedSquareMeterPrice2 = GetSquareMeterPriceBasedOnLocation(estimationModels, inputModel);
+            var adjustedSquareMeterPrice = GetSquareMeterPriceBasedOnLocation(estimationModels, inputModel);
 
             // Is it close to water?
 
@@ -50,7 +50,7 @@ namespace BooliPriceEstimator
                 priceEstimate += (int)Math.Round(inputModel.AdditionalArea * AdditionalAreaFactor);
             }
 
-            throw new NotImplementedException();
+            return priceEstimate;
         }
 
         private int GetSquareMeterPriceBasedOnLocation(List<PriceEstimationModel> estimationModels, PriceEstimationInputModel inputModel)
@@ -75,29 +75,53 @@ namespace BooliPriceEstimator
             }
 
             SetRentRange(recentlySoldNearObjectOfInterest, inputModel);
+            var rentFactor = GetRentFactor(inputModel.RentRange);
 
+            var medianSquareMeterPrice = GetMedianSquareMeterPrice(recentlySoldNearObjectOfInterest);
 
+            return (int)(medianSquareMeterPrice * rentFactor);
+        }
+
+        /// <summary>
+        /// Higher rent means lower sqm price
+        /// </summary>
+        /// <param name="rentRange"></param>
+        /// <returns></returns>
+        private double GetRentFactor(RentRange rentRange)
+        {
+            const double RentFactor = 0.30; // +- 30% on square meter price depending on if an apartment is below or abov average rent
+
+            switch (rentRange)
+            {
+                case RentRange.Average:
+                    return 1;
+                case RentRange.Above:
+                    return 1-RentFactor;
+                case RentRange.Below:
+                    return 1+RentFactor;
+                default:
+                    throw new Exception($"unexpected renr range type: {rentRange}");
+            }
         }
 
         private void SetRentRange(List<PriceEstimationModel> recentlySoldNearObjectOfInterest, PriceEstimationInputModel inputModel)
         {
-            const double RentPercentageDiffThreshold = 0.2; //If
+            const double RentPercentageDiffThreshold = 0.2;// +- 20% threshold of median rent
 
             var medianRentPrice = GetMedianRentPrice(recentlySoldNearObjectOfInterest);
-
-            // 1. Figure out how much the rent varies, 
-            // If it doesn't, return "average"
 
             //var maxVariation = GetLowestRent
 
             // 2. Figure out if inputModel is +- 20% of median
             var rentDiff = (double)inputModel.Rent / (double)medianRentPrice;
 
-            if (rentDiff< (1- RentPercentageDiffThreshold)) //20% less than median
+            // rent diff is less than 80% of median
+            if (rentDiff < (1 - RentPercentageDiffThreshold)) //20% less than median
             {
                 inputModel.RentRange = RentRange.Below;
             }
 
+            // rent diff is more than 120% of median
             else if (rentDiff > (1 + RentPercentageDiffThreshold)) //20% less than median
             {
                 inputModel.RentRange = RentRange.Above;
@@ -107,8 +131,6 @@ namespace BooliPriceEstimator
             {
                 inputModel.RentRange = RentRange.Average;
             }
-
-
         }
 
         //private int GetRecentlySoldObjects(List<PriceEstimationModel> estimationModels)
@@ -168,52 +190,20 @@ namespace BooliPriceEstimator
 
             return priceDiffA < priceDiffB ? modelA : modelB;
         }
-
-        //private int GetCurrentSquareMeterPriceMedian(List<PriceEstimationModel> estimationModels)
-        //{
-        //    const int thresholdNrOfObjects = 10;
-
-        //    //Get mean for the last 2 quarters. 
-        //    var last2QSoldObjects = GetPreviousTwoQuartersSoldData(estimationModels);
-        //    if (last2QSoldObjects.Count < thresholdNrOfObjects)
-        //    {
-        //        //do something cool
-        //    }
-
-        //    //Median value to exclude "spikes"
-        //    var medianSquareMeterPrice = GetMedianSoldPriceSquareMeter(last2QSoldObjects);
-        //    return (int)medianSquareMeterPrice;
-        //}
-
-        //private int GetCurrentRentPriceMedian(List<PriceEstimationModel> estimationModels)
-        //{
-        //    const int thresholdNrOfObjects = 10;
-
-        //    //Get mean for the last 2 quarters. 
-        //    var last2QSoldObjects = GetPreviousTwoQuartersSoldData(estimationModels);
-        //    if (last2QSoldObjects.Count < thresholdNrOfObjects)
-        //    {
-        //        //do something cool
-        //    }
-
-        //    //Median value to exclude "spikes"
-        //    var medianSquareMeterPrice = GetMedianRentPrice(last2QSoldObjects);
-        //    return (int)medianSquareMeterPrice;
-        //}
-
-        private int GetMedianRentPrice(List<PriceEstimationModel> last2QSoldObjects)
+        
+        private int GetMedianRentPrice(List<PriceEstimationModel> estimationModels)
         {
-            var ordered = last2QSoldObjects.OrderBy(_ => _.Rent).ToList();
+            var ordered = estimationModels.OrderBy(_ => _.Rent).ToList();
             var medianSqPrice = ordered.ElementAt((int)Math.Ceiling((double)ordered.Count / 2.0)).Rent;
             return (int)medianSqPrice;
         }
 
-        //private int GetMedianSquareMeterPrice(List<PriceEstimationModel> last2QSoldObjects)
-        //{
-        //    var ordered = last2QSoldObjects.OrderBy(_ => _.SquareMeterPrice).ToList();
-        //    var medianSqPrice = ordered.ElementAt((int)Math.Ceiling((double)ordered.Count / 2.0)).SquareMeterPrice;
-        //    return (int)medianSqPrice;
-        //}
+        private int GetMedianSquareMeterPrice(List<PriceEstimationModel> estimationModels)
+        {
+            var ordered = estimationModels.OrderBy(_ => _.SquareMeterPrice).ToList();
+            var medianSqPrice = ordered.ElementAt((int)Math.Ceiling((double)ordered.Count / 2.0)).SquareMeterPrice;
+            return (int)medianSqPrice;
+        }
 
         private List<PriceEstimationModel> GetPreviousTwoQuartersSoldData(List<PriceEstimationModel> estimationModels)
         {
