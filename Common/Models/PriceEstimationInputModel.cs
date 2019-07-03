@@ -7,7 +7,6 @@
             Size = size;
             AreaName = areaName;
             Rent = rent;
-
         }
 
         public int Size { get; set; }

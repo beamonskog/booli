@@ -2,7 +2,6 @@
 
 namespace Common.Models.NativeBooli
 {
-
     public class Address
     {
         public string streetAddress { get; set; }

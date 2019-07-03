@@ -5,7 +5,6 @@ namespace BooliPriceEstimator
 {
     public interface IBooliPriceEstimator
     {
-        //Task<int> GetMeanPricePerSquareMeter(string area);
         Task<int> GetPriceEstimation(PriceEstimationInputModel inputModel);
     }
 }

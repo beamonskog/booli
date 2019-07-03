@@ -18,18 +18,7 @@ namespace BooliPriceEstimator
             _booliPriceEstimatorRepository = booliPriceEstimatorRepository;
         }
 
-        //public async Task SyncSoldObjects()
-        //{
-        //    var booliApi = new BooliApi();
-
-
-        //    var nativeResults = await booliApi.GetNativeSoldObjectsInArea("stockholm", 5);
-        //    var mappedResults = MappModels(nativeResults);
-
-        //    await _booliPriceEstimatorRepository.SyncSoldObjects(mappedResults);
-        //}
-
-        public async Task SyncSoldObjectsItteratively()
+           public async Task SyncSoldObjectsItteratively()
         {
             var area = "stockholm";
             var yearSpan = 10;
@@ -94,11 +83,9 @@ namespace BooliPriceEstimator
             {
                 BooliId = soldObject.BooliId,
                 AdditionalArea = soldObject.AdditionalArea,
-                Floor = soldObject.Floor,
                 LivingArea = soldObject.LivingArea,
                 Location = location,
                 ObjectType = soldObject.ObjectType,
-                PlotArea = soldObject.PlotArea,
                 Rent = soldObject.Rent,
                 Rooms = soldObject.Rooms,
                 SoldPrice = soldObject.SoldPrice,

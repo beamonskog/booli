@@ -31,9 +31,6 @@ namespace BooliPriceEstimator
             //booliApiHandler.SyncSoldObjectsItteratively().Wait();
             booliPriceEstimator.GetPriceEstimation(new PriceEstimationInputModel(74, "Årsta", 5000)).Wait();
 
-
-            //var booliPriceEstimator = new BooliPriceEstimator
-
             Console.WriteLine("done!");
             Console.ReadLine();
         }        

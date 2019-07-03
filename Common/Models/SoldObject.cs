@@ -7,14 +7,12 @@ namespace Common.Models
         public Location Location { get; set; }
         public double LivingArea { get; set; }
         public int AdditionalArea { get; set; }
-        //public int PlotArea { get; set; }// kollar främst på lägenheter
         public double Rooms { get; set; }
         public string ObjectType { get; set; } // borde vara enum
         public int BooliId { get; set; }// irrelevant
         public string SoldDate { get; set; }
         public int SoldPrice { get; set; }
         public int? Rent { get; set; }
-        //public double? Floor { get; set; }// relevant men prioriterar bort. 
     }
 
     public class Location

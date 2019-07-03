@@ -17,7 +17,6 @@ namespace Common.Models
             }
             catch (Exception e)
             {
-
                 throw e;
             }
         }
@@ -39,7 +38,6 @@ namespace Common.Models
             var year = int.Parse(soldDate.Substring(0, 4));
             var month = int.Parse(soldDate.Substring(5, 2));
             var day = int.Parse(soldDate.Substring(8, 2));
-            //var soldQuarter = GetQuarter(soldDate);
             var soldDateTime = new DateTime(year, month, day);
             return new SoldDate(soldDateTime);
         }
@@ -47,7 +45,6 @@ namespace Common.Models
         public Position Position { get; set; }
         public double LivingArea { get; set; }
         public int AdditionalArea { get; set; }
-        public int PlotArea { get; set; }
         public SoldDate SoldDate { get; set; }
         public int SoldPrice { get; set; }
         public int? Rent { get; set; }
@@ -79,8 +76,6 @@ namespace Common.Models
         /// <returns></returns>
         private string GetQuarter(DateTime inputDate)
         {
-            //var monthString = inputDate.Substring(5, 2);
-            //var monthNumber = int.Parse(monthString);
             if (inputDate.Month > 0 && inputDate.Month < 4)
             {
                 return "Q1";
